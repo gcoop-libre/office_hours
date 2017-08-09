@@ -438,3 +438,37 @@ function office_hours_add_day_delta(input) {
   }
 }
 
+/**
+ * Helper function to convert '08:00' / '8:00' / '800' to '0800'
+ */
+function _office_hours_time_to_mil(time) {
+  if (empty(time)) {
+    return time;
+  }
+
+  time = '' + time;
+  time = time.replace(':', '');
+  time = '0000'.substr(0, (4 - time.length)) + time;
+
+  return time;
+}
+
+/**
+ * Helper function to convert '0800' to '08:00' / '8:00' / '800'
+ */
+function _office_hours_time_format(time, format) {
+  time = '' + time;
+  time = time.replace(':', '');
+  time = '0000'.substr(0, (4 - time.length)) + time;
+
+  var hours = parseInt(time.substr(0, 2));
+  var minutes = parseInt(time.substr(-2));
+  var current_date = new Date();
+  current_date.setHours(hours);
+  current_date.setMinutes(minutes);
+
+  var time_formatted = date(format, current_date.getTime());
+
+  return time_formatted;
+}
+
